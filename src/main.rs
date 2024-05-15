@@ -289,6 +289,11 @@ fn replace_with_stub(path: &Utf8Path) -> Result<()> {
     writef(Utf8Path::new(CARGO_TOML), cargo_toml_data.as_bytes())?;
     // And an empty source file
     writef(Utf8Path::new("src/lib.rs"), b"")?;
+    // A file indicating that this package is just a stub
+    writef(
+        Utf8Path::new("STUBBED.md"),
+        "This package was filtered out and stubbed by `cargo-vendor-filterer`".as_bytes(),
+    )?;
     // Finally, serialize the new checksums
     let mut w = std::fs::File::create(checksums_path).map(std::io::BufWriter::new)?;
     serde_json::to_writer(&mut w, &checksums)?;
